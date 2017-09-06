@@ -1,0 +1,11 @@
+2 players identified by name strings
+
+game class like object
+ - has a method for point scoring
+ - keeps track of the current score for both players
+   - this includes possible advantages each player may have
+ - can tell when a game ends
+ - extra
+   - recognize server and receiver player
+   - recognize game points and break points
+   - support for game sets
