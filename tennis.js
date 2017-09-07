@@ -19,7 +19,7 @@ Game.prototype.getPlayers = function() {
     return this.players;
 };
 
-Game.prototype.getScore = function(player){
+Game.prototype.getPlayerScore = function(player){
     return this.players[player];
 };
 
