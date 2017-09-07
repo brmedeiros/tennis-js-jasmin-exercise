@@ -81,25 +81,69 @@ describe("The Game", function() {
     });
 
     it("should give a player advantage when they score and both players have 40 points and no advantages", function(){
-	var game =  new Game('Katarina', 'Garen');
-	game.score('Katarina');
-	console.log(game.getGameScore());
-	game.score('Katarina');
-	console.log(game.getGameScore());
-	game.score('Garen');
-	console.log(game.getGameScore());
-	game.score('Garen');
-	console.log(game.getGameScore());
-	game.score('Katarina');
-	console.log(game.getGameScore());
-	game.score('Garen');
-	console.log(game.getGameScore());
-	game.score('Katarina');
-	console.log(game.getGameScore());
-	expect(game.getPlayerScore('Katarina')['score']).toBe(40);
-	expect(game.getPlayerScore('Garen')['score']).toBe(40);
-	expect(game.getPlayerScore('Katarina')['adv']).toBe(true);
-	expect(game.getPlayerScore('Garen')['adv']).toBe(false);
+	var game1 =  new Game('Katarina', 'Garen');
+	game1.score('Katarina');
+	console.log(game1.getGameScore());
+	game1.score('Katarina');
+	console.log(game1.getGameScore());
+	game1.score('Garen');
+	console.log(game1.getGameScore());
+	game1.score('Garen');
+	console.log(game1.getGameScore());
+	game1.score('Katarina');
+	console.log(game1.getGameScore());
+	game1.score('Garen');
+	console.log(game1.getGameScore());
+	game1.score('Katarina');
+	console.log(game1.getGameScore());
+	expect(game1.getPlayerScore('Katarina')['score']).toBe(40);
+	expect(game1.getPlayerScore('Garen')['score']).toBe(40);
+	expect(game1.getPlayerScore('Katarina')['adv']).toBe(true);
+	expect(game1.getPlayerScore('Garen')['adv']).toBe(false);
+
+	var game2 =  new Game('Katarina', 'Garen');
+	game2.score('Katarina');
+	console.log(game2.getGameScore());
+	game2.score('Katarina');
+	console.log(game2.getGameScore());
+	game2.score('Garen');
+	console.log(game2.getGameScore());
+	game2.score('Garen');
+	console.log(game2.getGameScore());
+	game2.score('Garen');	
+	console.log(game2.getGameScore());
+	game2.score('Katarina');
+	console.log(game2.getGameScore());
+	game2.score('Garen');
+	console.log(game2.getGameScore());
+	expect(game2.getPlayerScore('Katarina')['score']).toBe(40);
+	expect(game2.getPlayerScore('Garen')['score']).toBe(40);
+	expect(game2.getPlayerScore('Katarina')['adv']).toBe(false);
+	expect(game2.getPlayerScore('Garen')['adv']).toBe(true);
+    });
+    
+    it("it should remove the advantage from a player if the other player has 40 points and scores", function(){
+	var game1 =  new Game('Katarina', 'Garen');
+	game1.score('Katarina');
+	console.log(game1.getGameScore());
+	game1.score('Katarina');
+	console.log(game1.getGameScore());
+	game1.score('Garen');
+	console.log(game1.getGameScore());
+	game1.score('Garen');
+	console.log(game1.getGameScore());
+	game1.score('Garen');	
+	console.log(game1.getGameScore());
+	game1.score('Katarina');
+	console.log(game1.getGameScore());
+	game1.score('Garen');
+	console.log(game1.getGameScore());
+	game1.score('Katarina');
+	console.log(game1.getGameScore());
+	expect(game1.getPlayerScore('Katarina')['score']).toBe(40);
+	expect(game1.getPlayerScore('Garen')['score']).toBe(40);
+	expect(game1.getPlayerScore('Katarina')['adv']).toBe(false);
+	expect(game1.getPlayerScore('Garen')['adv']).toBe(false);
     });
 
     it("should tell the correct score for both players at anytime", function(){
@@ -128,5 +172,18 @@ describe("The Game", function() {
 	expect(game3.getGameScore()).toBe('Deuce');
 	game3.score('Varus'); // deuce adv Varus
 	expect(game3.getGameScore()).toBe('Deuce: Advantage ' + 'Varus');
+
+	var game4 =  new Game('Varus', 'Tristana');
+	game4.score('Varus'); //15-0
+	game4.score('Tristana'); //15-15
+	game4.score('Tristana'); //15-30
+	game4.score('Varus'); //30-30
+	game4.score('Varus'); //40-30
+	game4.score('Tristana'); //deuce
+	expect(game4.getPlayerScore('Tristana')['adv']).toBe(false);
+	expect(game4.getPlayerScore('Varus')['adv']).toBe(false);
+	expect(game4.getGameScore()).toBe('Deuce');
+	game4.score('Tristana'); // deuce adv Tristana
+	expect(game4.getGameScore()).toBe('Deuce: Advantage ' + 'Tristana');
     });
 });
