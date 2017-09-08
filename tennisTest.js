@@ -160,6 +160,20 @@ describe("The Game", function() {
 	game1.score('Azir'); // deuce adv Azir
 	game1.score('Azir'); // winner Azir
 	expect(game1.checkWinner()).toBe('Azir');
+
+	var game2 =  new Game('Miss Fortune', 'Azir');
+	expect(game2.checkWinner()).toBe(undefined);
+	game2.score('Miss Fortune'); //15-0
+	game2.score('Azir'); //15-15
+	game2.score('Azir'); //15-30
+	game2.score('Miss Fortune'); //30-30
+	game2.score('Miss Fortune'); //40-30
+	expect(game2.checkWinner()).toBe(undefined);
+	game2.score('Azir'); //deuce
+	expect(game2.checkWinner()).toBe(undefined);
+	game2.score('Miss Fortune'); // deuce adv Miss Fortune
+	game2.score('Miss Fortune'); // winner Miss Fortune
+	expect(game2.checkWinner()).toBe('Miss Fortune');
     });
 
     it("should tell the correct score for both players at anytime", function(){

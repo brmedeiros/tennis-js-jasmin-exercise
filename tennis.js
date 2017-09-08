@@ -8,7 +8,10 @@ document.getElementById("id1").innerHTML = HelloWorld();
 
 function Game(player1, player2){
     function gameInit(){
-	return {'score': 0, 'adv': false};
+	// maybe there is a better solution to finding
+	// the winner when the advantage rule applies than
+	// adding the winner key here
+	return {'score': 0, 'adv': false, 'winner': false};
     };
 
     this.players = {[player1]: gameInit(),
@@ -48,6 +51,8 @@ Game.prototype.score = function(player){
 	    // if the second player scores and the first player has
 	    // the advantage, remove the advantage
 	    this.players[this.p1name]['adv'] = false;
+	} else if(this.players[player]['adv'] == true){
+	    this.players[player]['winner'] = true;
 	}
     }
 };
@@ -82,7 +87,11 @@ Game.prototype.checkWinner = function(){
 	// same thing for the second player
 	return this.p2name;
     } else if(this.players[this.p1name]['score'] == 40 && this.players[this.p2name]['score'] == 40){
-	if(this.players[this.p1name]['adv'] == true){}
+	if(this.players[this.p1name]['winner'] == true){
+	    return this.p1name;
+	} else if(this.players[this.p2name]['winner'] == true){
+	    return this.p2name;
+	}
     }
 };
 
