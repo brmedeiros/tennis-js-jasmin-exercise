@@ -83,22 +83,44 @@ describe("The Game", function() {
     it("should give a player advantage when they score and both players have 40 points and no advantages", function(){
 	var game1 =  new Game('Katarina', 'Garen');
 	game1.score('Katarina');
-	console.log(game1.getGameScore());
 	game1.score('Katarina');
-	console.log(game1.getGameScore());
 	game1.score('Garen');
-	console.log(game1.getGameScore());
 	game1.score('Garen');
-	console.log(game1.getGameScore());
 	game1.score('Katarina');
-	console.log(game1.getGameScore());
 	game1.score('Garen');
-	console.log(game1.getGameScore());
 	game1.score('Katarina');
-	console.log(game1.getGameScore());
 	expect(game1.getPlayerScore('Katarina')['score']).toBe(40);
 	expect(game1.getPlayerScore('Garen')['score']).toBe(40);
 	expect(game1.getPlayerScore('Katarina')['adv']).toBe(true);
+	expect(game1.getPlayerScore('Garen')['adv']).toBe(false);
+
+	var game2 =  new Game('Katarina', 'Garen');
+	game2.score('Katarina');
+	game2.score('Katarina');
+	game2.score('Garen');
+	game2.score('Garen');
+	game2.score('Garen');	
+	game2.score('Katarina');
+	game2.score('Garen');
+	expect(game2.getPlayerScore('Katarina')['score']).toBe(40);
+	expect(game2.getPlayerScore('Garen')['score']).toBe(40);
+	expect(game2.getPlayerScore('Katarina')['adv']).toBe(false);
+	expect(game2.getPlayerScore('Garen')['adv']).toBe(true);
+    });
+    
+    it("should remove the advantage from a player if the other player has 40 points and scores", function(){
+	var game1 =  new Game('Katarina', 'Garen');
+	game1.score('Katarina');
+	game1.score('Katarina');
+	game1.score('Garen');
+	game1.score('Garen');
+	game1.score('Garen');	
+	game1.score('Katarina');
+	game1.score('Garen');
+	game1.score('Katarina');
+	expect(game1.getPlayerScore('Katarina')['score']).toBe(40);
+	expect(game1.getPlayerScore('Garen')['score']).toBe(40);
+	expect(game1.getPlayerScore('Katarina')['adv']).toBe(false);
 	expect(game1.getPlayerScore('Garen')['adv']).toBe(false);
 
 	var game2 =  new Game('Katarina', 'Garen');
@@ -114,36 +136,30 @@ describe("The Game", function() {
 	console.log(game2.getGameScore());
 	game2.score('Katarina');
 	console.log(game2.getGameScore());
+	game2.score('Katarina');
+	console.log(game2.getGameScore());
 	game2.score('Garen');
 	console.log(game2.getGameScore());
 	expect(game2.getPlayerScore('Katarina')['score']).toBe(40);
 	expect(game2.getPlayerScore('Garen')['score']).toBe(40);
 	expect(game2.getPlayerScore('Katarina')['adv']).toBe(false);
-	expect(game2.getPlayerScore('Garen')['adv']).toBe(true);
+	expect(game2.getPlayerScore('Garen')['adv']).toBe(false);
     });
-    
-    it("it should remove the advantage from a player if the other player has 40 points and scores", function(){
-	var game1 =  new Game('Katarina', 'Garen');
-	game1.score('Katarina');
-	console.log(game1.getGameScore());
-	game1.score('Katarina');
-	console.log(game1.getGameScore());
-	game1.score('Garen');
-	console.log(game1.getGameScore());
-	game1.score('Garen');
-	console.log(game1.getGameScore());
-	game1.score('Garen');	
-	console.log(game1.getGameScore());
-	game1.score('Katarina');
-	console.log(game1.getGameScore());
-	game1.score('Garen');
-	console.log(game1.getGameScore());
-	game1.score('Katarina');
-	console.log(game1.getGameScore());
-	expect(game1.getPlayerScore('Katarina')['score']).toBe(40);
-	expect(game1.getPlayerScore('Garen')['score']).toBe(40);
-	expect(game1.getPlayerScore('Katarina')['adv']).toBe(false);
-	expect(game1.getPlayerScore('Garen')['adv']).toBe(false);
+
+    it("should have a winner when one player has the advantage and scores again", function(){
+	var game1 =  new Game('Miss Fortune', 'Azir');
+	expect(game1.checkWinner()).toBe(undefined);
+	game1.score('Miss Fortune'); //15-0
+	game1.score('Azir'); //15-15
+	game1.score('Azir'); //15-30
+	game1.score('Miss Fortune'); //30-30
+	game1.score('Miss Fortune'); //40-30
+	expect(game1.checkWinner()).toBe(undefined);
+	game1.score('Azir'); //deuce
+	expect(game1.checkWinner()).toBe(undefined);
+	game1.score('Azir'); // deuce adv Azir
+	game1.score('Azir'); // winner Azir
+	expect(game1.checkWinner()).toBe('Azir');
     });
 
     it("should tell the correct score for both players at anytime", function(){
@@ -185,5 +201,24 @@ describe("The Game", function() {
 	expect(game4.getGameScore()).toBe('Deuce');
 	game4.score('Tristana'); // deuce adv Tristana
 	expect(game4.getGameScore()).toBe('Deuce: Advantage ' + 'Tristana');
+
+	var game5 =  new Game('Varus', 'Tristana');
+	game5.score('Varus'); //15-0
+	game5.score('Tristana'); //15-15
+	game5.score('Tristana'); //15-30
+	game5.score('Varus'); //30-30
+	game5.score('Varus'); //40-30
+	game5.score('Tristana'); //deuce
+	expect(game5.getGameScore()).toBe('Deuce');
+	game5.score('Tristana'); // deuce adv Tristana
+	expect(game5.getGameScore()).toBe('Deuce: Advantage ' + 'Tristana');
+	game5.score('Varus'); // deuce 
+	expect(game5.getPlayerScore('Tristana')['adv']).toBe(false);
+	expect(game5.getPlayerScore('Varus')['adv']).toBe(false);
+	expect(game5.getGameScore()).toBe('Deuce');
+	game5.score('Varus'); // deuce adv Varus
+	expect(game5.getPlayerScore('Tristana')['adv']).toBe(false);
+	expect(game5.getPlayerScore('Varus')['adv']).toBe(true);
+	expect(game5.getGameScore()).toBe('Deuce: Advantage ' + 'Varus');
     });
 });
